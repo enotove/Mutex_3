@@ -54,12 +54,14 @@ public:
     void swap_unique_lock(Data& data1, Data& data2)
     {
         std::unique_lock <std::mutex> lk1(data1.mtx_,std::defer_lock);
+        std::unique_lock <std::mutex> lk2(data2.mtx_, std::defer_lock);
         Data temp;
         temp = data1;
-        data1 = data2;
-        std::unique_lock <std::mutex> lk2(data2.mtx_, std::defer_lock);
-        data2 = temp;
         std::lock(data1.mtx_, data2.mtx_);
+        data1 = data2;
+        
+        data2 = temp;
+        
 
     }
     
